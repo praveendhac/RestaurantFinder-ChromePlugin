@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Best Restaurant Finder</title>
+
+  <style>
+    :root{
+      --indigo: #3f51b5;
+      --saffron: #ff9933;
+      --lightgreen: #8bc34a;
+      --bg-grad: linear-gradient(180deg, #eef2ff 0%, #fff8ec 50%, #f1fff0 100%);
+      --card-bg: rgba(255,255,255,0.95);
+      --muted: #666;
+      --maxw: 720px;
+    }
+
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg-grad);color:#222;}
+    .container{max-width:var(--maxw);min-width:620px;margin:12px auto;padding:18px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#fcfcff);box-shadow:0 10px 30px rgba(30,40,80,0.06);}
+    header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(90deg,var(--indigo),var(--saffron));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;box-shadow:0 8px 22px rgba(80,70,150,0.12)}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    label{display:block;margin-top:12px;font-size:13px;color:#333}
+    input[type="text"],input[type="password"],select,textarea{
+      width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9f2;background:white;font-size:14px;box-sizing:border-box;
+    }
+    .row{display:flex;gap:8px}
+    button{cursor:pointer;border:0;padding:10px 12px;border-radius:8px;background:var(--indigo);color:white;font-weight:600}
+    button.secondary{background:transparent;border:1px solid #e3e7ee;color:#333}
+    .muted{color:var(--muted);font-size:12px;margin-top:6px}
+
+    .results{margin-top:14px}
+    .about{padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfbff);box-shadow:0 5px 14px rgba(30,40,80,0.03)}
+    .restaurant{margin-top:12px;padding:14px;border-radius:10px;background:var(--card-bg);box-shadow:0 8px 20px rgba(20,30,60,0.04);border-left:6px solid var(--saffron)}
+    .restaurant h3{margin:0 0 6px 0}
+    .restaurant .address{font-size:13px;color:var(--muted);margin-bottom:8px}
+    .restaurant ul{margin:6px 0 0 18px;color:#222}
+    pre.raw{white-space:pre-wrap;overflow:auto;padding:10px;background:#111827;color:#fff;border-radius:8px}
+
+    .small{font-size:12px;color:var(--muted)}
+    .footer{margin-top:12px;font-size:12px;color:var(--muted)}
+    .spinner{display:inline-block;width:16px;height:16px;border-radius:50%;border:3px solid rgba(0,0,0,0.08);border-top-color:var(--indigo);animation:spin 1s linear infinite;vertical-align:middle}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    a.maplink{color:var(--lightgreen);font-weight:600;text-decoration:none}
+    a.maplink:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="title">
+    <header>
+      <div class="logo">RS</div>
+      <div>
+        <h1 id="title">Best Restaurant Finder</h1>
+        <p class="lead">Top 2 restaurants for a food item — powered by Gemini. (You provide the API key.)</p>
+      </div>
+    </header>
+
+    <label for="apiKey">Gemini API Key</label>
+    <input id="apiKey" type="password" placeholder="Enter Gemini API key (will be encrypted)">
+
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button id="saveKeyBtn">Save & Encrypt Key</button>
+      <button id="clearKeyBtn" class="secondary">Clear Key</button>
+    </div>
+    <div class="muted">When saving you'll be asked to create a passphrase. That passphrase is not stored — it's required to decrypt the key later.</div>
+
+    <label for="city">City (CITY, STATE, COUNTRY)</label>
+    <input id="city" type="text" placeholder="Hyderabad, Telangana, India">
+
+    <label for="food">Food Item (LLM query)</label>
+    <input id="food" type="text" placeholder="e.g., Qubani ka Meetha">
+
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button id="searchBtn">Search</button>
+      <button id="clearBtn" class="secondary">Clear Results</button>
+    </div>
+
+    <div class="results" id="results" aria-live="polite"></div>
+
+    <div class="footer">Requests go directly to Google Gemini REST endpoint. The encrypted API key and salt are stored locally only.</div>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
+
